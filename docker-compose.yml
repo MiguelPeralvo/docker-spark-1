@@ -5,6 +5,7 @@ master:
   environment:
     MASTER: spark://master:7077
     SPARK_CONF_DIR: /conf
+    SPARK_DRIVER_MEMORY: ${SPARK_DRIVER_MEMORY}
     SPARK_PUBLIC_DNS: localhost
   expose:
     - 7001
@@ -22,7 +23,7 @@ master:
     - 8080:8080
   volumes:
     - ./conf/master:/conf
-    - ./data:/tmp/data
+    - ${DATA_PATH}:/tmp/data
 
 worker:
   image: gettyimages/spark
@@ -30,8 +31,8 @@ worker:
   hostname: worker
   environment:
     SPARK_CONF_DIR: /conf
-    SPARK_WORKER_CORES: 2
-    SPARK_WORKER_MEMORY: 1g
+    SPARK_WORKER_CORES: ${SPARK_WORKER_CORES}
+    SPARK_WORKER_MEMORY: ${SPARK_WORKER_MEMORY}
     SPARK_WORKER_PORT: 8881
     SPARK_WORKER_WEBUI_PORT: 8081
     SPARK_PUBLIC_DNS: localhost
@@ -48,4 +49,4 @@ worker:
     - 8081:8081
   volumes:
     - ./conf/worker:/conf
-    - ./data:/tmp/data
+    - ${DATA_PATH}:/tmp/data
